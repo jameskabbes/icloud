@@ -1,17 +1,16 @@
 from parent_class import ParentClass 
 from real_time_input import RealTimeInput as RTI
-import iCloud_Contact
+from kabbes_icloud import ICloudContact
 import pandas as pd
 import random
-import icloud_support_functions as icsf
 import py_starter as ps
 
 
-class iCloud_Contacts( ParentClass ):
+class ICloudContacts( ParentClass ):
 
     TABLE_NAME = 'iCloud_Contacts'
     DATA_COL = 'data'
-    COLS = [iCloud_Contact.iCloud_Contact.ID_COL, DATA_COL]
+    COLS = [ICloudContact.ID_COL, DATA_COL]
 
     def __init__( self, connection = None, df = pd.DataFrame(), json_string = None, dictionary = {} ):
 
@@ -38,14 +37,14 @@ class iCloud_Contacts( ParentClass ):
 
         list_of_dictionaries = self.connection.contacts.all()
         for dictionary in list_of_dictionaries:
-            self.add_iCloud_Contact( iCloud_Contact.iCloud_Contact( dictionary ) )
+            self.add_iCloud_Contact( ICloudContact( dictionary ) )
 
     def _import_from_dict( self, dictionary ):
 
         '''Given a dictionary, populate the Contacts'''
 
         for contactId in dictionary:
-            new_Contact = iCloud_Contact.iCloud_Contact( dictionary[contactId] )
+            new_Contact = ICloudContact( dictionary[contactId] )
             self.add_iCloud_Contact( new_Contact )
 
     def _import_from_json( self, json_string ):
@@ -61,7 +60,7 @@ class iCloud_Contacts( ParentClass ):
 
         json_strings = df[ self.DATA_COL ]
         for i in range(len( json_strings )):
-            new_Contact = iCloud_Contact.iCloud_Contact( json_string = json_strings[i] )
+            new_Contact = ICloudContact( json_string = json_strings[i] )
             self.add_iCloud_Contact( new_Contact )
 
     def export_to_dict( self ):
@@ -152,7 +151,7 @@ class iCloud_Contacts( ParentClass ):
             right = Contacts_inst
 
         ### Perform the merge
-        merged_Contacts = iCloud_Contacts()
+        merged_Contacts = ICloudContacts()
         left_ids = [ Contact.get_id() for Contact in list(left)  ]
         right_ids = [ Contact.get_id() for Contact in list(right)  ]
 
@@ -202,7 +201,7 @@ class iCloud_Contacts( ParentClass ):
         dictionary = {'firstName': 'James', 'lastName': 'Kabbes'} returns an instance with all Contacts that contain James Kabbes'''
 
         # use recursion to select Contacts where keys=values
-        Valid_Contacts = iCloud_Contacts()
+        Valid_Contacts = ICloudContacts()
         Valid_Contacts.Contacts = self.Contacts.copy()
 
         for att in dictionary:
@@ -277,7 +276,7 @@ class iCloud_Contacts( ParentClass ):
         print ('Begin searching for Contacts...')
         list_of_Contacts, final_string = self.RTI.get_multiple_inputs()
 
-        Contacts = iCloud_Contacts()
+        Contacts = ICloudContacts()
         for Contact in list_of_Contacts:
             Contacts.add_iCloud_Contact( Contact )
 
