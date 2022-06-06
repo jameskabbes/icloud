@@ -7,5 +7,5 @@ _repo_Dir = _src_Dir.ascend()
 _cwd_Dir = do.Dir( do.get_cwd() )
 
 from .Connection import Connection
-from .ICloudContact import iCloud_Contact
+from .ICloudContact import ICloudContact
 from .ICloudContacts import ICloudContacts

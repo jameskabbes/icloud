@@ -1,7 +1,7 @@
-from parent_class import ParentClass 
+from parent_class import ParentClass, ParentPluralList 
 import py_starter as ps
 
-class iCloud_Contact( ParentClass ):
+class ICloudContact( ParentClass ):
 
     ID_COL = 'contactId'
 
@@ -187,55 +187,21 @@ class iCloud_Contact( ParentClass ):
                 return viable_Options.Options[0]
 
 
-class Attribute_Options (ParentClass) :
+class Attribute_Options (ParentPluralList) :
 
     suffix = '_Options'
 
     def __init__(self, name, list_of_options):
 
-        ParentClass.__init__( self )
+        ParentPluralList.__init__( self, 'Options' )
         self.name = name
-        self.Options = []
 
         for dictionary in list_of_options:
             self.add_Option( Attribute_Option(dictionary) )
 
-    def __len__( self ):
-
-        return len(self.Options)
-
-    def __iter__( self ):
-
-        self.i = -1
-        return self
-
-    def __next__( self ):
-
-        self.i += 1
-
-        if self.i >= len(self.Options):
-            raise StopIteration
-        else:
-            return self.Options[self.i]
-
     def add_Option( self, new_Option ):
 
-        self.Options.append( new_Option )
-
-    def print_imp_atts( self, print_off = True ):
-
-        string = self._print_imp_atts_helper( atts = ['name'], print_off = False ) + '\n'
-        string += 'Options:\n'
-        for Option in self:
-            string += Option.print_one_line_atts( print_off = False ) + '\n'
-
-        string = string[:-1]
-        return self.print_string( string, print_off = print_off )
-
-    def print_one_line_atts( self, print_off = True, leading_string = '\t' ):
-
-        string = leading_string + 'Name: ' + str(self.name) + ',\tOptions: ' + str(len(self))
-        return self.print_string( string, print_off = print_off )
+        self._add( new_Option )
 
 class Attribute_Option (ParentClass):
 

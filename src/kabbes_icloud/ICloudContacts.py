@@ -1,24 +1,22 @@
-from parent_class import ParentClass 
+from parent_class import ParentPluralDict
 from real_time_input import RealTimeInput as RTI
-from kabbes_icloud import ICloudContact
+from kabbes_icloud import ICloudContact, Connection
 import pandas as pd
-import random
 import py_starter as ps
 
 
-class ICloudContacts( ParentClass ):
+class ICloudContacts( ParentPluralDict ):
 
-    TABLE_NAME = 'iCloud_Contacts'
+    TABLE_NAME = 'ICloudContacts'
     DATA_COL = 'data'
     COLS = [ICloudContact.ID_COL, DATA_COL]
 
-    def __init__( self, connection = None, df = pd.DataFrame(), json_string = None, dictionary = {} ):
+    def __init__( self, conn = None, df = pd.DataFrame(), json_string = None, dictionary = {} ):
 
-        ParentClass.__init__( self )
+        ParentPluralDict.__init__( self, 'Contacts' )
 
-        self.connection = connection
+        self.conn = conn
 
-        self.Contacts = {} #the contactId is the key
         self.RTI = iCloudRealTimeInput( self )
 
         if not df.empty:
@@ -30,14 +28,14 @@ class ICloudContacts( ParentClass ):
         elif dictionary != {}:
             self._import_from_dict( dictionary )
 
-        elif self.connection != None:
+        elif self.conn != None:
             self._get_Contacts_from_iCloud()
 
     def _get_Contacts_from_iCloud( self ):
 
-        list_of_dictionaries = self.connection.contacts.all()
+        list_of_dictionaries = self.conn.conn.contacts.all()
         for dictionary in list_of_dictionaries:
-            self.add_iCloud_Contact( ICloudContact( dictionary ) )
+            self.add_ICloudContact( ICloudContact( dictionary ) )
 
     def _import_from_dict( self, dictionary ):
 
@@ -45,7 +43,7 @@ class ICloudContacts( ParentClass ):
 
         for contactId in dictionary:
             new_Contact = ICloudContact( dictionary[contactId] )
-            self.add_iCloud_Contact( new_Contact )
+            self.add_ICloudContact( new_Contact )
 
     def _import_from_json( self, json_string ):
 
@@ -61,7 +59,7 @@ class ICloudContacts( ParentClass ):
         json_strings = df[ self.DATA_COL ]
         for i in range(len( json_strings )):
             new_Contact = ICloudContact( json_string = json_strings[i] )
-            self.add_iCloud_Contact( new_Contact )
+            self.add_ICloudContact( new_Contact )
 
     def export_to_dict( self ):
 
@@ -102,45 +100,7 @@ class ICloudContacts( ParentClass ):
 
         return df
 
-    def __len__( self ):
-
-        return len(self.Contacts)
-
-    def __iter__( self ):
-
-        self.i = -1
-        return self
-
-    def __next__( self ):
-
-        self.i += 1
-
-        if self.i >= len(self.Contacts):
-            raise StopIteration
-        else:
-            return self.Contacts[ list(self.Contacts.keys())[self.i] ]
-
-    def print_imp_atts( self, print_off = True ):
-
-        string = 'Contacts: ' + str(len(self)) + '\n'
-        for Contact in self:
-            string += Contact.print_one_line_atts( print_off = False ) + '\n'
-
-        return self._print_imp_atts_helper( override_string = string, print_off = print_off )
-
-    def print_one_line_atts( self, leading_string = '\t', print_off = True ):
-
-        string = 'iCloud_Contacts: ' + str(len(self))
-        return self._print_one_line_atts_helper( override_string = string, leading_string = leading_string, print_off = print_off )
-
-    def add_iCloud_Contacts( self, list_of_Contact_insts ):
-
-        '''Add a list of Contact classes to the Contacts dictionary '''
-
-        for Contact_inst in list_of_Contact_insts:
-            self.add_iCloud_Contact( Contact_inst )
-
-    def merge_iCloud_Contacts( self, Contacts_inst, how = 'left', overwrite = False ):
+    def merge_ICloudContacts( self, Contacts_inst, how = 'left', overwrite = False ):
 
         if how == 'right':
             left = Contacts_inst
@@ -162,38 +122,29 @@ class ICloudContacts( ParentClass ):
             if id in left_ids:
                 right.Contacts[ id ].update( dictionary = left.Contacts[id].export_to_dict() )
 
-            merged_Contacts.add_iCloud_Contact( right.Contacts[ id ] )
+            merged_Contacts.add_ICloudContact( right.Contacts[ id ] )
 
         # add all contacts which are present in the left but not in the right
         for i in range(len(left)):
             id = left_ids[i]
 
             if id not in right_ids:
-                merged_Contacts.add_iCloud_Contact( left.Contacts[ id ] )
+                merged_Contacts.add_ICloudContact( left.Contacts[ id ] )
 
         if overwrite:
             self = merged_Contacts
 
         return merged_Contacts
 
-    def add_iCloud_Contact( self, Contact_inst ):
+    def add_ICloudContact( self, Contact_inst ):
 
         '''Add a singular iCloud_Contact to the Contacts dictionary'''
+        self._add( Contact_inst.contactId, Contact_inst )
 
-        self.Contacts[ Contact_inst.contactId ] =  Contact_inst
-
-    def remove_iCloud_Contact( self, Contact_inst ):
+    def remove_ICloudContact( self, Contact_inst ):
 
         '''Remove a singular iCloud_Contact from the Contacts dictionary'''
-
-        self.Contacts.pop( Contact_inst.contactId, None )
-
-    def get_random_Contact( self ):
-
-        '''Select a random Contact class instance from the Contacts dictionary '''
-
-        rand_ind = random.randrange( len(self.Contacts) )
-        return self.Contacts[ list(self.Contacts.keys())[rand_ind] ]
+        self._remove( Contact_inst.contactId )
 
     def select_Contacts_where( self, dictionary = {} ):
 
@@ -278,7 +229,7 @@ class ICloudContacts( ParentClass ):
 
         Contacts = ICloudContacts()
         for Contact in list_of_Contacts:
-            Contacts.add_iCloud_Contact( Contact )
+            Contacts.add_ICloudContact( Contact )
 
         return Contacts, final_string
 
