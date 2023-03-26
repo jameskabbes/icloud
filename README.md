@@ -1,8 +1,8 @@
-[GitHub Pages](https://jameskabbes.github.io/icloud)<br>
-[PyPI](https://pypi.org/project/kabbes-icloud)
-
 # icloud
 Python connection to iCloud
+
+[Documentation](https://jameskabbes.github.io/icloud)<br>
+[PyPI](https://pypi.org/project/kabbes-icloud)
 
 <br> 
 
