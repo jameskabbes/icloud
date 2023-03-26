@@ -1,13 +1,23 @@
-from parent_class import ParentClass, ParentPluralList 
+from kabbes_menu import Menu
 import py_starter as ps
+from kabbes_icloud import AttributeOptions, AttributeOption
 
-class ICloudContact( ParentClass ):
+class ICloudContact( Menu ):
+
+    firstName = ''
+    lastName = ''
 
     ID_COL = 'contactId'
+    _SEARCHABLE_ATTS = [ 'firstName','lastName', 'fullName' ]
+
+    _ONE_LINE_ATTS = [ 'firstName','lastName' ] 
+    _IMP_ATTS = [ 'firstName','lastName','phones' ]
+
+    _OVERRIDE_OPTIONS = {1: ['Open Attribute Options', 'run_Child_user']}
 
     def __init__( self, dictionary = {}, json_string = None ):
 
-        ParentClass.__init__( self )
+        Menu.__init__( self )
 
         if dictionary != {}:
             self._import_from_dict( dictionary )
@@ -15,19 +25,14 @@ class ICloudContact( ParentClass ):
         elif json_string != None:
             self._import_from_json( json_string )
 
+        self.fullName = ' '.join( [self.firstName, self.lastName] )
+
         self._check_for_Attribute_Options()
-        self.display = self.get_display()
-
-    def get_display( self ):
-
-        return ' '.join( [ str(self.get_attr( 'firstName' )), str( self.get_attr('lastName')) ] )
 
     def get_id_col( self ):
-
         return self.ID_COL
 
     def get_id( self ):
-
         return self.get_attr( self.get_id_col() )
 
     def get_attr( self, att ):
@@ -43,7 +48,7 @@ class ICloudContact( ParentClass ):
 
     def att_has_Options( self, att ):
 
-        options_att = att + Attribute_Options.suffix
+        options_att = att + AttributeOptions.SUFFIX
 
         if self.has_attr( options_att ):
             return options_att
@@ -54,11 +59,17 @@ class ICloudContact( ParentClass ):
 
         vars_to_check = vars(self).copy() #define this here otherwise the vars(self) changes length
 
+
+
         for key in vars_to_check:
             value = self.get_attr(key)
             if type( value ) == list:
-                new_att = key + Attribute_Options.suffix
-                self.set_attr( new_att, Attribute_Options(key, value) )
+                new_att = key + AttributeOptions.SUFFIX
+
+                new_AttributeOptions = AttributeOptions(key, value)
+                self.set_attr( new_att, new_AttributeOptions )
+
+                self._Children.append( new_AttributeOptions )
 
     def update( self, dictionary = {}, json_string = None ):
 
@@ -67,14 +78,6 @@ class ICloudContact( ParentClass ):
 
         self.set_atts( dictionary )
         self._check_for_Attribute_Options()
-
-    def print_imp_atts( self, print_off = True):
-
-        return self._print_imp_atts_helper( atts = ['firstName','lastName','phones'], print_off = print_off )
-
-    def print_one_line_atts( self, print_off = True, leading_string = '\t' ):
-
-        return self._print_one_line_atts_helper( atts = ['firstName', 'lastName'], print_off = print_off, leading_string = leading_string )
 
     def _import_from_dict( self, dictionary ):
 
@@ -89,7 +92,7 @@ class ICloudContact( ParentClass ):
 
         atts_dict = {}
         for att in vars(self):
-            if not att.endswith( Attribute_Options.suffix ):
+            if not att.endswith( AttributeOptions.SUFFIX ):
                 atts_dict[ att ] = self.get_attr( att )
 
         return atts_dict
@@ -99,22 +102,10 @@ class ICloudContact( ParentClass ):
         dictionary = self.export_to_dict()
         return ps.dict_to_json( dictionary )
 
-    def user_select_Option( self, att ):
-
-        '''only works for attributes which have a list of options'''
-
-        viable_Options = self.get_attr( att + Attribute_Options.suffix )
-
-        ps.print_for_loop( [ Option.print_one_line_atts(print_off = False) for Option in viable_Options ] )
-        ind = ps.get_int_input( 1, len(self.get_attr(att)), 'Select the ' + str(att) + ' option: ' ) - 1
-
-        Option = viable_Options.Options[ ind ]
-        return Option, viable_Options
-
     def check_has_iMessage( self ):
 
         if self.has_attr('phones'):
-            for Option in self.get_attr( 'phones' + Attribute_Options.suffix ):
+            for Option in self.get_attr( 'phones' + AttributeOptions.SUFFIX ):
                 if Option.label == 'IPHONE':
                     return True
 
@@ -124,7 +115,7 @@ class ICloudContact( ParentClass ):
 
         '''att = "phones", list_pref_atts = ['label','other_field'], list_pref_values = [['IPHONE','MOBILE'],['OTHER_VALUE']] '''
 
-        viable_Options = self.get_attr( att + Attribute_Options.suffix )
+        viable_Options = self.get_attr( att + AttributeOptions.SUFFIX )
 
         for i in range(len(list_pref_atts)):
 
@@ -150,9 +141,9 @@ class ICloudContact( ParentClass ):
         ''' att = "phones", pref_att = 'label', pref_values = ['IPHONE', 'MOBILE'], index_pref = 0 '''
 
         if att_Options == None:
-            att_Options = self.get_attr( att + Attribute_Options.suffix )
+            att_Options = self.get_attr( att + AttributeOptions.SUFFIX )
 
-        viable_Options = Attribute_Options( att_Options.name, [] )
+        viable_Options = AttributeOptions( att_Options.name, [] )
 
         # loop through each preffered value ['IPHONE','MOBILE']
         for pref_value in pref_values:
@@ -186,50 +177,3 @@ class ICloudContact( ParentClass ):
             else:
                 return viable_Options.Options[0]
 
-
-class Attribute_Options (ParentPluralList) :
-
-    suffix = '_Options'
-
-    def __init__(self, name, list_of_options):
-
-        ParentPluralList.__init__( self, 'Options' )
-        self.name = name
-
-        for dictionary in list_of_options:
-            self.add_Option( Attribute_Option(dictionary) )
-
-    def add_Option( self, new_Option ):
-
-        self._add( new_Option )
-
-class Attribute_Option (ParentClass):
-
-    def __init__( self, dictionary ):
-
-        ParentClass.__init__( self )
-        self.set_atts(dictionary)
-
-    def get_attr( self, att ):
-
-        if self.has_attr( att ):
-            return getattr( self, att )
-        else:
-            return None
-
-    def print_imp_atts( self, print_off = True ):
-
-        string = self.print_class_type( print_off = False ) + '\n'
-        string += ('Field:\t' + str(self.get_attr('field')) + '\n' )
-        string += ('Label:\t' + str(self.get_attr('label')) + '\n' )
-        string = string[:-1]
-        return self.print_string( string, print_off = print_off )
-
-    def print_one_line_atts( self, print_off = True, leading_string = '\t' ):
-
-        string = leading_string
-        string += 'Field:\t' + str(self.get_attr('field')) + ', '
-        string += 'Label:\t' + str(self.get_attr('label')) + ', '
-
-        string = string[:-2]
-        return self.print_string( string, print_off = print_off )

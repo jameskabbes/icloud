@@ -1,6 +1,6 @@
 import kabbes_icloud
 import user_profile
-from account_manager import Accounts
+from kabbes_account_manager import Accounts
 
 Accs = Accounts.Accounts( database_name = 'jameskabbes' )
 

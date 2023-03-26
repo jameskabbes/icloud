@@ -1,11 +1,13 @@
 from parent_class import ParentPluralDict
-from real_time_input import RealTimeInput as RTI
+from kabbes_menu import Menu
 from kabbes_icloud import ICloudContact, Connection
 import pandas as pd
 import py_starter as ps
 
 
-class ICloudContacts( ParentPluralDict ):
+class ICloudContacts( ParentPluralDict, Menu ):
+
+    _OVERRIDE_OPTIONS = {1: ['Open iCloud Contact', 'run_Child_user']}
 
     TABLE_NAME = 'ICloudContacts'
     DATA_COL = 'data'
@@ -14,10 +16,9 @@ class ICloudContacts( ParentPluralDict ):
     def __init__( self, conn = None, df = pd.DataFrame(), json_string = None, dictionary = {} ):
 
         ParentPluralDict.__init__( self, 'Contacts' )
+        Menu.__init__( self )
 
         self.conn = conn
-
-        self.RTI = iCloudRealTimeInput( self )
 
         if not df.empty:
             self._import_from_df( df )
@@ -209,68 +210,4 @@ class ICloudContacts( ParentPluralDict ):
         self.df_breakdown = df_breakdown
         return df_breakdown
 
-    def prepare_autocomplete( self, contactIds, string, index_value, atts_to_display = ['firstName','lastName'] ):
 
-        '''prepare the autocomplete for the Contact search function'''
-
-        if len(contactIds) == 0:
-            display = string + ' - (0)'
-
-        elif len(contactIds) >= 1:
-            Contact_display_value = ' '.join( self.Contacts[contactIds[index_value]].get_atts( atts_to_display ) )
-            display = string + ' - (' + str(index_value + 1)+ '/' + str(len(contactIds)) + ') - ' + Contact_display_value
-
-        return display
-
-    def get_Contacts_from_input( self ):
-
-        print ('Begin searching for Contacts...')
-        list_of_Contacts, final_string = self.RTI.get_multiple_inputs()
-
-        Contacts = ICloudContacts()
-        for Contact in list_of_Contacts:
-            Contacts.add_ICloudContact( Contact )
-
-        return Contacts, final_string
-
-
-class iCloudRealTimeInput( RTI ):
-
-    def __init__( self, Contacts ):
-
-        RTI.__init__( self )
-        self.Contacts = Contacts
-
-    def search( self ):
-
-        '''search for given string in the Contacts '''
-
-        self.suggestions = []
-        if len(self.string) > 1:
-
-            for Contact in self.Contacts:
-
-                name = Contact.display.lower()
-                if self.string.lower() in name:
-                    self.suggestions.append( Contact )
-
-    def prepare_autocomplete( self ):
-
-        if len(self.string) > 1:
-            if len(self.suggestions) == 0:
-                self.display = self.string + ' - (0)'
-
-            else:
-                self.suggestion = self.suggestions[ self.suggestion_index ]
-
-                ### Get the suggestion display based on the aself object's method
-                suggestion_display = self.suggestion.display
-
-                self.display = '{string} - ({i}/{n}) - {suggestion_display}'.format(
-                    string = self.string,
-                    i = self.suggestion_index+1,
-                    n = len(self.suggestions),
-                    suggestion_display = suggestion_display )
-
-        else:
-            self.display = self.string
