@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kabbes_icloud.ICloudContacts &mdash; kabbes_icloud 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            kabbes_icloud
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">src</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">kabbes_icloud</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">kabbes_icloud.ICloudContacts</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for kabbes_icloud.ICloudContacts</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">parent_class</span> <span class="kn">import</span> <span class="n">ParentPluralDict</span>
+<span class="kn">from</span> <span class="nn">kabbes_menu</span> <span class="kn">import</span> <span class="n">Menu</span>
+<span class="kn">from</span> <span class="nn">kabbes_icloud</span> <span class="kn">import</span> <span class="n">ICloudContact</span><span class="p">,</span> <span class="n">Connection</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">py_starter</span> <span class="k">as</span> <span class="nn">ps</span>
+
+
+<div class="viewcode-block" id="ICloudContacts"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContacts.ICloudContacts">[docs]</a><span class="k">class</span> <span class="nc">ICloudContacts</span><span class="p">(</span> <span class="n">ParentPluralDict</span><span class="p">,</span> <span class="n">Menu</span> <span class="p">):</span>
+
+    <span class="n">_OVERRIDE_OPTIONS</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Open iCloud Contact&#39;</span><span class="p">,</span> <span class="s1">&#39;run_Child_user&#39;</span><span class="p">]}</span>
+
+    <span class="n">TABLE_NAME</span> <span class="o">=</span> <span class="s1">&#39;ICloudContacts&#39;</span>
+    <span class="n">DATA_COL</span> <span class="o">=</span> <span class="s1">&#39;data&#39;</span>
+    <span class="n">COLS</span> <span class="o">=</span> <span class="p">[</span><span class="n">ICloudContact</span><span class="o">.</span><span class="n">ID_COL</span><span class="p">,</span> <span class="n">DATA_COL</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">conn</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(),</span> <span class="n">json_string</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{}</span> <span class="p">):</span>
+
+        <span class="n">ParentPluralDict</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;Contacts&#39;</span> <span class="p">)</span>
+        <span class="n">Menu</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span> <span class="bp">self</span> <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">conn</span> <span class="o">=</span> <span class="n">conn</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_import_from_df</span><span class="p">(</span> <span class="n">df</span> <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">json_string</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_import_from_json</span><span class="p">(</span> <span class="n">json_string</span> <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">dictionary</span> <span class="o">!=</span> <span class="p">{}:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_import_from_dict</span><span class="p">(</span> <span class="n">dictionary</span> <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_Contacts_from_iCloud</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_get_Contacts_from_iCloud</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+
+        <span class="n">list_of_dictionaries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">contacts</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">dictionary</span> <span class="ow">in</span> <span class="n">list_of_dictionaries</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_ICloudContact</span><span class="p">(</span> <span class="n">ICloudContact</span><span class="p">(</span> <span class="n">dictionary</span> <span class="p">)</span> <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_import_from_dict</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">dictionary</span> <span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;Given a dictionary, populate the Contacts&#39;&#39;&#39;</span>
+
+        <span class="k">for</span> <span class="n">contactId</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="p">:</span>
+            <span class="n">new_Contact</span> <span class="o">=</span> <span class="n">ICloudContact</span><span class="p">(</span> <span class="n">dictionary</span><span class="p">[</span><span class="n">contactId</span><span class="p">]</span> <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_ICloudContact</span><span class="p">(</span> <span class="n">new_Contact</span> <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_import_from_json</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">json_string</span> <span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;Given a json string, populate the Contacts &#39;&#39;&#39;</span>
+
+        <span class="n">dictionary</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">json_to_dict</span><span class="p">(</span> <span class="n">json_string</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_import_from_dict</span><span class="p">(</span> <span class="n">dictionary</span> <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_import_from_df</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">df</span> <span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;Given a DataFrame, populate the Contacts &#39;&#39;&#39;</span>
+
+        <span class="n">json_strings</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span> <span class="bp">self</span><span class="o">.</span><span class="n">DATA_COL</span> <span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span> <span class="n">json_strings</span> <span class="p">)):</span>
+            <span class="n">new_Contact</span> <span class="o">=</span> <span class="n">ICloudContact</span><span class="p">(</span> <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_strings</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_ICloudContact</span><span class="p">(</span> <span class="n">new_Contact</span> <span class="p">)</span>
+
+<div class="viewcode-block" id="ICloudContacts.export_to_dict"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContacts.ICloudContacts.export_to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">export_to_dict</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;export all contacts to a dictionary&#39;&#39;&#39;</span>
+
+        <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">Contact</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">dictionary</span><span class="o">.</span><span class="n">update</span><span class="p">({</span> <span class="n">Contact</span><span class="o">.</span><span class="n">ID_COL</span> <span class="p">:</span> <span class="n">Contact</span><span class="o">.</span><span class="n">export_to_dict</span><span class="p">()</span> <span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">dictionary</span></div>
+
+<div class="viewcode-block" id="ICloudContacts.export_to_json"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContacts.ICloudContacts.export_to_json">[docs]</a>    <span class="k">def</span> <span class="nf">export_to_json</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;export all contacts to a json format&#39;&#39;&#39;</span>
+
+        <span class="n">dictionary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">export_to_dict</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ps</span><span class="o">.</span><span class="n">dict_to_json</span><span class="p">(</span> <span class="n">dictionary</span> <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ICloudContacts.export_to_df"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContacts.ICloudContacts.export_to_df">[docs]</a>    <span class="k">def</span> <span class="nf">export_to_df</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;export all contacts to a pandas DataFrame&#39;&#39;&#39;</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span> <span class="n">columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">COLS</span> <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">Contact</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+
+            <span class="n">new_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span> <span class="n">columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">COLS</span> <span class="p">)</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">COLS</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="n">col</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">DATA_COL</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">Contact</span><span class="o">.</span><span class="n">export_to_json</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">Contact</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span> <span class="n">col</span> <span class="p">)</span>
+
+                <span class="n">new_df</span><span class="p">[</span> <span class="n">col</span> <span class="p">]</span> <span class="o">=</span> <span class="p">[</span> <span class="n">value</span> <span class="p">]</span>
+
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">new_df</span><span class="p">,</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span> <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="ICloudContacts.merge_ICloudContacts"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContacts.ICloudContacts.merge_ICloudContacts">[docs]</a>    <span class="k">def</span> <span class="nf">merge_ICloudContacts</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">Contacts_inst</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">overwrite</span> <span class="o">=</span> <span class="kc">False</span> <span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">how</span> <span class="o">==</span> <span class="s1">&#39;right&#39;</span><span class="p">:</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="n">Contacts_inst</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="bp">self</span>
+
+        <span class="k">else</span><span class="p">:</span> <span class="c1">#left, there are only two merge options</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="bp">self</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="n">Contacts_inst</span>
+
+        <span class="c1">### Perform the merge</span>
+        <span class="n">merged_Contacts</span> <span class="o">=</span> <span class="n">ICloudContacts</span><span class="p">()</span>
+        <span class="n">left_ids</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Contact</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span> <span class="k">for</span> <span class="n">Contact</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">left</span><span class="p">)</span>  <span class="p">]</span>
+        <span class="n">right_ids</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Contact</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span> <span class="k">for</span> <span class="n">Contact</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>  <span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">right</span><span class="p">)):</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="n">right_ids</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+
+            <span class="c1"># if this contact is also present in the left, update the Contact with the info from the left</span>
+            <span class="k">if</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">left_ids</span><span class="p">:</span>
+                <span class="n">right</span><span class="o">.</span><span class="n">Contacts</span><span class="p">[</span> <span class="nb">id</span> <span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span> <span class="n">dictionary</span> <span class="o">=</span> <span class="n">left</span><span class="o">.</span><span class="n">Contacts</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span><span class="o">.</span><span class="n">export_to_dict</span><span class="p">()</span> <span class="p">)</span>
+
+            <span class="n">merged_Contacts</span><span class="o">.</span><span class="n">add_ICloudContact</span><span class="p">(</span> <span class="n">right</span><span class="o">.</span><span class="n">Contacts</span><span class="p">[</span> <span class="nb">id</span> <span class="p">]</span> <span class="p">)</span>
+
+        <span class="c1"># add all contacts which are present in the left but not in the right</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">left</span><span class="p">)):</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="n">left_ids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="nb">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">right_ids</span><span class="p">:</span>
+                <span class="n">merged_Contacts</span><span class="o">.</span><span class="n">add_ICloudContact</span><span class="p">(</span> <span class="n">left</span><span class="o">.</span><span class="n">Contacts</span><span class="p">[</span> <span class="nb">id</span> <span class="p">]</span> <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">overwrite</span><span class="p">:</span>
+            <span class="bp">self</span> <span class="o">=</span> <span class="n">merged_Contacts</span>
+
+        <span class="k">return</span> <span class="n">merged_Contacts</span></div>
+
+<div class="viewcode-block" id="ICloudContacts.add_ICloudContact"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContacts.ICloudContacts.add_ICloudContact">[docs]</a>    <span class="k">def</span> <span class="nf">add_ICloudContact</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">Contact_inst</span> <span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;Add a singular iCloud_Contact to the Contacts dictionary&#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add</span><span class="p">(</span> <span class="n">Contact_inst</span><span class="o">.</span><span class="n">contactId</span><span class="p">,</span> <span class="n">Contact_inst</span> <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ICloudContacts.remove_ICloudContact"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContacts.ICloudContacts.remove_ICloudContact">[docs]</a>    <span class="k">def</span> <span class="nf">remove_ICloudContact</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">Contact_inst</span> <span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;Remove a singular iCloud_Contact from the Contacts dictionary&#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_remove</span><span class="p">(</span> <span class="n">Contact_inst</span><span class="o">.</span><span class="n">contactId</span> <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ICloudContacts.select_Contacts_where"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContacts.ICloudContacts.select_Contacts_where">[docs]</a>    <span class="k">def</span> <span class="nf">select_Contacts_where</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{}</span> <span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;Returns an iCloud_Contacts instance where all Contacts have keys=values in the dictionary</span>
+<span class="sd">        dictionary = {&#39;firstName&#39;: &#39;James&#39;, &#39;lastName&#39;: &#39;Kabbes&#39;} returns an instance with all Contacts that contain James Kabbes&#39;&#39;&#39;</span>
+
+        <span class="c1"># use recursion to select Contacts where keys=values</span>
+        <span class="n">Valid_Contacts</span> <span class="o">=</span> <span class="n">ICloudContacts</span><span class="p">()</span>
+        <span class="n">Valid_Contacts</span><span class="o">.</span><span class="n">Contacts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Contacts</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="p">:</span>
+
+            <span class="n">boolean_dict</span> <span class="o">=</span> <span class="n">Valid_Contacts</span><span class="o">.</span><span class="n">lambda_on_Contacts</span><span class="p">(</span> <span class="k">lambda</span> <span class="n">Contact</span><span class="p">:</span> <span class="n">Contact</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span> <span class="n">att</span> <span class="p">)</span> <span class="o">==</span> <span class="n">dictionary</span><span class="p">[</span><span class="n">att</span><span class="p">]</span> <span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">contactId</span> <span class="ow">in</span> <span class="n">boolean_dict</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">boolean_dict</span><span class="p">[</span> <span class="n">contactId</span> <span class="p">]:</span>
+                    <span class="n">Valid_Contacts</span><span class="o">.</span><span class="n">remove_iCloud_Contact</span><span class="p">(</span> <span class="n">Valid_Contacts</span><span class="o">.</span><span class="n">Contacts</span><span class="p">[</span><span class="n">contactId</span><span class="p">]</span> <span class="p">)</span>
+
+        <span class="c1"># returns an iCloud_Contacts class instance</span>
+        <span class="k">return</span> <span class="n">Valid_Contacts</span></div>
+
+<div class="viewcode-block" id="ICloudContacts.update_Contacts"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContacts.ICloudContacts.update_Contacts">[docs]</a>    <span class="k">def</span> <span class="nf">update_Contacts</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">json_string</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&#39;&#39;&#39; { contactId1: Dictionary1, contactId2: Dictionary2 }  &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="n">json_string</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dictionary</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">json_to_dict</span><span class="p">(</span> <span class="n">json_string</span> <span class="p">)</span>
+
+        <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Contact</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="n">Contact</span><span class="o">.</span><span class="n">ID_COL</span><span class="p">)</span> <span class="k">for</span> <span class="n">Contact</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">]</span>
+        <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span> <span class="n">dictionary</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ICloudContacts.lambda_on_Contacts"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContacts.ICloudContacts.lambda_on_Contacts">[docs]</a>    <span class="k">def</span> <span class="nf">lambda_on_Contacts</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">lambda_func</span> <span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;given a lambda function (lambda Contact: Contact.get_attr(&quot;firstName&quot;)), put each return statement in a dict&#39;&#39;&#39;</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">contactId</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Contacts</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">contactId</span><span class="p">]</span> <span class="o">=</span> <span class="n">lambda_func</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">Contacts</span><span class="p">[</span><span class="n">contactId</span><span class="p">]</span> <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">results</span></div>
+
+<div class="viewcode-block" id="ICloudContacts.show_attribute_breakdown"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContacts.ICloudContacts.show_attribute_breakdown">[docs]</a>    <span class="k">def</span> <span class="nf">show_attribute_breakdown</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+
+        <span class="n">values_and_counts</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">contactId</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Contacts</span><span class="p">:</span>
+            <span class="n">Contact_inst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Contacts</span><span class="p">[</span><span class="n">contactId</span><span class="p">]</span>
+
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="n">Contact_inst</span><span class="p">):</span>
+
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">values_and_counts</span><span class="p">:</span>
+                    <span class="n">values_and_counts</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">values_and_counts</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">df_breakdown</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span> <span class="p">{</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">values_and_counts</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="s1">&#39;Frequency&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">values_and_counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="p">}</span> <span class="p">)</span>
+        <span class="n">df_breakdown</span><span class="p">[</span><span class="s1">&#39;Proportion&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_breakdown</span><span class="p">[</span><span class="s1">&#39;Frequency&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Contacts</span><span class="p">)</span>
+        <span class="n">df_breakdown</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span> <span class="s1">&#39;Frequency&#39;</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span> <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">df_breakdown</span> <span class="o">=</span> <span class="n">df_breakdown</span>
+        <span class="k">return</span> <span class="n">df_breakdown</span></div></div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, James Kabbes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

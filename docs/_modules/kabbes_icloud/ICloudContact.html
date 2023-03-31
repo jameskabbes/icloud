@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kabbes_icloud.ICloudContact &mdash; kabbes_icloud 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            kabbes_icloud
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">src</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">kabbes_icloud</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">kabbes_icloud.ICloudContact</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for kabbes_icloud.ICloudContact</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">kabbes_menu</span> <span class="kn">import</span> <span class="n">Menu</span>
+<span class="kn">import</span> <span class="nn">py_starter</span> <span class="k">as</span> <span class="nn">ps</span>
+<span class="kn">from</span> <span class="nn">kabbes_icloud</span> <span class="kn">import</span> <span class="n">AttributeOptions</span><span class="p">,</span> <span class="n">AttributeOption</span>
+
+<div class="viewcode-block" id="ICloudContact"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContact.ICloudContact">[docs]</a><span class="k">class</span> <span class="nc">ICloudContact</span><span class="p">(</span> <span class="n">Menu</span> <span class="p">):</span>
+
+    <span class="n">firstName</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">lastName</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="n">ID_COL</span> <span class="o">=</span> <span class="s1">&#39;contactId&#39;</span>
+    <span class="n">_SEARCHABLE_ATTS</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;firstName&#39;</span><span class="p">,</span><span class="s1">&#39;lastName&#39;</span><span class="p">,</span> <span class="s1">&#39;fullName&#39;</span> <span class="p">]</span>
+
+    <span class="n">_ONE_LINE_ATTS</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;firstName&#39;</span><span class="p">,</span><span class="s1">&#39;lastName&#39;</span> <span class="p">]</span> 
+    <span class="n">_IMP_ATTS</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;firstName&#39;</span><span class="p">,</span><span class="s1">&#39;lastName&#39;</span><span class="p">,</span><span class="s1">&#39;phones&#39;</span> <span class="p">]</span>
+
+    <span class="n">_OVERRIDE_OPTIONS</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Open Attribute Options&#39;</span><span class="p">,</span> <span class="s1">&#39;run_Child_user&#39;</span><span class="p">]}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">json_string</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+
+        <span class="n">Menu</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span> <span class="bp">self</span> <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">dictionary</span> <span class="o">!=</span> <span class="p">{}:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_import_from_dict</span><span class="p">(</span> <span class="n">dictionary</span> <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">json_string</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_import_from_json</span><span class="p">(</span> <span class="n">json_string</span> <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fullName</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">firstName</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastName</span><span class="p">]</span> <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_for_Attribute_Options</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ICloudContact.get_id_col"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContact.ICloudContact.get_id_col">[docs]</a>    <span class="k">def</span> <span class="nf">get_id_col</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ID_COL</span></div>
+
+<div class="viewcode-block" id="ICloudContact.get_id"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContact.ICloudContact.get_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_id</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_id_col</span><span class="p">()</span> <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ICloudContact.get_attr"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContact.ICloudContact.get_attr">[docs]</a>    <span class="k">def</span> <span class="nf">get_attr</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">att</span> <span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_attr</span><span class="p">(</span> <span class="n">att</span> <span class="p">):</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">att</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ICloudContact.get_atts"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContact.ICloudContact.get_atts">[docs]</a>    <span class="k">def</span> <span class="nf">get_atts</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">atts</span> <span class="p">):</span>
+
+        <span class="k">return</span> <span class="p">[</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="n">att</span><span class="p">))</span> <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">atts</span> <span class="p">]</span></div>
+
+<div class="viewcode-block" id="ICloudContact.att_has_Options"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContact.ICloudContact.att_has_Options">[docs]</a>    <span class="k">def</span> <span class="nf">att_has_Options</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">att</span> <span class="p">):</span>
+
+        <span class="n">options_att</span> <span class="o">=</span> <span class="n">att</span> <span class="o">+</span> <span class="n">AttributeOptions</span><span class="o">.</span><span class="n">SUFFIX</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_attr</span><span class="p">(</span> <span class="n">options_att</span> <span class="p">):</span>
+            <span class="k">return</span> <span class="n">options_att</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+    <span class="k">def</span> <span class="nf">_check_for_Attribute_Options</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+
+        <span class="n">vars_to_check</span> <span class="o">=</span> <span class="nb">vars</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1">#define this here otherwise the vars(self) changes length</span>
+
+
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">vars_to_check</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span> <span class="n">value</span> <span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+                <span class="n">new_att</span> <span class="o">=</span> <span class="n">key</span> <span class="o">+</span> <span class="n">AttributeOptions</span><span class="o">.</span><span class="n">SUFFIX</span>
+
+                <span class="n">new_AttributeOptions</span> <span class="o">=</span> <span class="n">AttributeOptions</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_attr</span><span class="p">(</span> <span class="n">new_att</span><span class="p">,</span> <span class="n">new_AttributeOptions</span> <span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_Children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">new_AttributeOptions</span> <span class="p">)</span>
+
+<div class="viewcode-block" id="ICloudContact.update"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContact.ICloudContact.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">json_string</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">json_string</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dictionary</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">json_to_dict</span><span class="p">(</span> <span class="n">json_string</span> <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_atts</span><span class="p">(</span> <span class="n">dictionary</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_for_Attribute_Options</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_import_from_dict</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">dictionary</span> <span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_atts</span><span class="p">(</span> <span class="n">dictionary</span> <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_import_from_json</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">json_string</span> <span class="p">):</span>
+
+        <span class="n">dictionary</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">json_to_dict</span><span class="p">(</span> <span class="n">json_string</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_import_from_dict</span><span class="p">(</span> <span class="n">dictionary</span> <span class="p">)</span>
+
+<div class="viewcode-block" id="ICloudContact.export_to_dict"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContact.ICloudContact.export_to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">export_to_dict</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+
+        <span class="n">atts_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">att</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span> <span class="n">AttributeOptions</span><span class="o">.</span><span class="n">SUFFIX</span> <span class="p">):</span>
+                <span class="n">atts_dict</span><span class="p">[</span> <span class="n">att</span> <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span> <span class="n">att</span> <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">atts_dict</span></div>
+
+<div class="viewcode-block" id="ICloudContact.export_to_json"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContact.ICloudContact.export_to_json">[docs]</a>    <span class="k">def</span> <span class="nf">export_to_json</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+
+        <span class="n">dictionary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">export_to_dict</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ps</span><span class="o">.</span><span class="n">dict_to_json</span><span class="p">(</span> <span class="n">dictionary</span> <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ICloudContact.check_has_iMessage"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContact.ICloudContact.check_has_iMessage">[docs]</a>    <span class="k">def</span> <span class="nf">check_has_iMessage</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_attr</span><span class="p">(</span><span class="s1">&#39;phones&#39;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">Option</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span> <span class="s1">&#39;phones&#39;</span> <span class="o">+</span> <span class="n">AttributeOptions</span><span class="o">.</span><span class="n">SUFFIX</span> <span class="p">):</span>
+                <span class="k">if</span> <span class="n">Option</span><span class="o">.</span><span class="n">label</span> <span class="o">==</span> <span class="s1">&#39;IPHONE&#39;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ICloudContact.get_multi_preffered_Option"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContact.ICloudContact.get_multi_preffered_Option">[docs]</a>    <span class="k">def</span> <span class="nf">get_multi_preffered_Option</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">att</span><span class="p">,</span> <span class="n">list_pref_atts</span><span class="p">,</span> <span class="n">list_pref_values</span><span class="p">,</span> <span class="n">index_pref</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;att = &quot;phones&quot;, list_pref_atts = [&#39;label&#39;,&#39;other_field&#39;], list_pref_values = [[&#39;IPHONE&#39;,&#39;MOBILE&#39;],[&#39;OTHER_VALUE&#39;]] &#39;&#39;&#39;</span>
+
+        <span class="n">viable_Options</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span> <span class="n">att</span> <span class="o">+</span> <span class="n">AttributeOptions</span><span class="o">.</span><span class="n">SUFFIX</span> <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">list_pref_atts</span><span class="p">)):</span>
+
+            <span class="n">pref_att</span> <span class="o">=</span> <span class="n">list_pref_atts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">pref_values</span> <span class="o">=</span> <span class="n">list_pref_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="n">viable_Options</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_preffered_Option</span><span class="p">(</span> <span class="n">att</span><span class="p">,</span> <span class="n">pref_att</span><span class="p">,</span> <span class="n">pref_values</span><span class="p">,</span> <span class="n">index_pref</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">att_Options</span> <span class="o">=</span> <span class="n">viable_Options</span> <span class="p">)</span>
+            <span class="n">viable_Options</span><span class="o">.</span><span class="n">print_atts</span><span class="p">()</span>
+
+        <span class="c1"># if they don&#39;t want an index returned, return all viable options</span>
+        <span class="k">if</span> <span class="n">index_pref</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">viable_Options</span>
+
+        <span class="c1"># if they specify an index, return the given index</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">viable_Options</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">index_pref</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">viable_Options</span><span class="o">.</span><span class="n">Options</span><span class="p">[</span><span class="n">index_pref</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">viable_Options</span><span class="o">.</span><span class="n">Options</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ICloudContact.get_preffered_Option"><a class="viewcode-back" href="../../kabbes_icloud.html#kabbes_icloud.ICloudContact.ICloudContact.get_preffered_Option">[docs]</a>    <span class="k">def</span> <span class="nf">get_preffered_Option</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">att</span><span class="p">,</span> <span class="n">pref_att</span><span class="p">,</span> <span class="n">pref_values</span><span class="p">,</span> <span class="n">index_pref</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">att_Options</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&#39;&#39;&#39; att = &quot;phones&quot;, pref_att = &#39;label&#39;, pref_values = [&#39;IPHONE&#39;, &#39;MOBILE&#39;], index_pref = 0 &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="n">att_Options</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">att_Options</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span> <span class="n">att</span> <span class="o">+</span> <span class="n">AttributeOptions</span><span class="o">.</span><span class="n">SUFFIX</span> <span class="p">)</span>
+
+        <span class="n">viable_Options</span> <span class="o">=</span> <span class="n">AttributeOptions</span><span class="p">(</span> <span class="n">att_Options</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">[]</span> <span class="p">)</span>
+
+        <span class="c1"># loop through each preffered value [&#39;IPHONE&#39;,&#39;MOBILE&#39;]</span>
+        <span class="k">for</span> <span class="n">pref_value</span> <span class="ow">in</span> <span class="n">pref_values</span><span class="p">:</span>
+
+            <span class="c1"># loop through each Phone number option</span>
+            <span class="k">for</span> <span class="n">Option</span> <span class="ow">in</span> <span class="n">att_Options</span><span class="p">:</span>
+
+                <span class="c1"># and the attribute matches the preferred value: Option.field == &#39;IPHONE&#39;</span>
+                <span class="k">if</span> <span class="n">Option</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span> <span class="n">pref_att</span> <span class="p">)</span> <span class="o">==</span> <span class="n">pref_value</span><span class="p">:</span>
+                    <span class="n">viable_Options</span><span class="o">.</span><span class="n">add_Option</span><span class="p">(</span> <span class="n">Option</span> <span class="p">)</span>
+
+            <span class="c1"># as soon as a pref_att/pref_value combo is found, exit the loop</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">viable_Options</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="c1"># if nothing satisfied the conditions, reset to the original</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">viable_Options</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">viable_Options</span> <span class="o">=</span> <span class="n">att_Options</span>
+
+        <span class="c1"># the user wants a instance of Attribute_Options ranked in order of feasibilty</span>
+        <span class="k">if</span> <span class="n">index_pref</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">viable_Options</span>
+
+        <span class="c1"># the user wants a specific Option class returned</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># If there are enough Options to return the preffered index</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">viable_Options</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">index_pref</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">viable_Options</span><span class="o">.</span><span class="n">Options</span><span class="p">[</span><span class="n">index_pref</span><span class="p">]</span>
+
+            <span class="c1"># Otherwise just return the first one</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">viable_Options</span><span class="o">.</span><span class="n">Options</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, James Kabbes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

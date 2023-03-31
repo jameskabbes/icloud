@@ -1,0 +1,53 @@
+kabbes\_icloud package
+======================
+
+Submodules
+----------
+
+kabbes\_icloud.AttributeOption module
+-------------------------------------
+
+.. automodule:: kabbes_icloud.AttributeOption
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+kabbes\_icloud.AttributeOptions module
+--------------------------------------
+
+.. automodule:: kabbes_icloud.AttributeOptions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+kabbes\_icloud.Connection module
+--------------------------------
+
+.. automodule:: kabbes_icloud.Connection
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+kabbes\_icloud.ICloudContact module
+-----------------------------------
+
+.. automodule:: kabbes_icloud.ICloudContact
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+kabbes\_icloud.ICloudContacts module
+------------------------------------
+
+.. automodule:: kabbes_icloud.ICloudContacts
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: kabbes_icloud
+   :members:
+   :undoc-members:
+   :show-inheritance:
