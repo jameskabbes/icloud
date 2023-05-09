@@ -1,22 +1,25 @@
 from parent_class import ParentPluralDict
-from kabbes_menu import Menu
+import kabbes_menu
 from kabbes_icloud import ICloudContact, Connection
 import pandas as pd
 import py_starter as ps
 
 
-class ICloudContacts( ParentPluralDict, Menu ):
+class ICloudContacts( ParentPluralDict, kabbes_menu.Menu ):
 
-    _OVERRIDE_OPTIONS = {1: ['Open iCloud Contact', 'run_Child_user']}
+    _OVERRIDE_OPTIONS = {"1": ['Open iCloud Contact', 'run_Child_user']}
 
     TABLE_NAME = 'ICloudContacts'
     DATA_COL = 'data'
     COLS = [ICloudContact.ID_COL, DATA_COL]
 
+    menu_client = kabbes_menu.Client( _OVERRIDE_OPTIONS=_OVERRIDE_OPTIONS )
+    cfg_menu = menu_client.cfg_menu
+
     def __init__( self, conn = None, df = pd.DataFrame(), json_string = None, dictionary = {} ):
 
         ParentPluralDict.__init__( self, 'Contacts' )
-        Menu.__init__( self )
+        kabbes_menu.Menu.__init__( self )
 
         self.conn = conn
 

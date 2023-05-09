@@ -1,8 +1,8 @@
-from kabbes_menu import Menu
+import kabbes_menu 
 import py_starter as ps
 from kabbes_icloud import AttributeOptions, AttributeOption
 
-class ICloudContact( Menu ):
+class ICloudContact( kabbes_menu.Menu ):
 
     firstName = ''
     lastName = ''
@@ -13,11 +13,14 @@ class ICloudContact( Menu ):
     _ONE_LINE_ATTS = [ 'firstName','lastName' ] 
     _IMP_ATTS = [ 'firstName','lastName','phones' ]
 
-    _OVERRIDE_OPTIONS = {1: ['Open Attribute Options', 'run_Child_user']}
+    _OVERRIDE_OPTIONS = {"1": ['Open Attribute Options', 'run_Child_user']}
+
+    menu_client = kabbes_menu.Client( _OVERRIDE_OPTIONS=_OVERRIDE_OPTIONS )
+    cfg_menu = menu_client.cfg_menu
 
     def __init__( self, dictionary = {}, json_string = None ):
 
-        Menu.__init__( self )
+        kabbes_menu.Menu.__init__( self )
 
         if dictionary != {}:
             self._import_from_dict( dictionary )

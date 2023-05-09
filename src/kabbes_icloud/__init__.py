@@ -11,3 +11,4 @@ from .AttributeOption import AttributeOption
 from .AttributeOptions import AttributeOptions
 from .ICloudContact import ICloudContact
 from .ICloudContacts import ICloudContacts
+from .Client import Client

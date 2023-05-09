@@ -1,14 +1,17 @@
-from kabbes_menu import Menu
+import kabbes_menu
 
-class AttributeOption ( Menu ):
+class AttributeOption ( kabbes_menu.Menu ):
 
-    _OVERRIDE_OPTIONS = {1: ['','do_nothing']}
+    _OVERRIDE_OPTIONS = {"1": ['','do_nothing']}
 
     _IMP_ATTS = [ 'field','label' ]
     _ONE_LINE_ATTS = ['field','label']
 
+    menu_client = kabbes_menu.Client( _OVERRIDE_OPTIONS=_OVERRIDE_OPTIONS )
+    cfg_menu = menu_client.cfg_menu
+
     def __init__( self, dictionary ):
-        Menu.__init__( self )
+        kabbes_menu.Menu.__init__( self )
         self.set_atts(dictionary)
 
     def get_attr( self, att ):

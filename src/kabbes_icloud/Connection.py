@@ -1,18 +1,36 @@
 from parent_class import ParentClass
 from pyicloud import PyiCloudService
+import kabbes_account_manager
 import sys
 
 class Connection( ParentClass ):
 
-    def __init__( self, *args, **kwargs ):
+    def __init__( self, **kwargs ):
 
         ParentClass.__init__( self )
-        self.get_connection( *args, **kwargs )
+        if self.cfg['load_credentials']:
+            email, password = self.load_credentials()
+            self.conn = self.get_connection( email = email, password = password )
 
-    def get_connection( self, *args, account_email = None, account_password = None ):
+        else:
+            self.conn = self.get_connection( **kwargs )
 
-        connection = PyiCloudService( account_email, account_password )
+    def load_credentials( self ):
 
+        if self.cfg['accounts_manager.client.inst'] == None:
+            args, kwargs = self.cfg['accounts_manager.client'].get_args(), self.cfg['accounts_manager.client'].get_kwargs()
+            self.cfg.get_node('accounts_manager.client.inst').set_value( kabbes_account_manager.Client( *args, **kwargs ) )
+
+        AppleAccount = self.cfg['accounts_manager.client.inst'].Accounts.Accounts[ self.cfg['accounts_manager.id'] ]
+
+        email = AppleAccount.Entries.get_Entry( 'email' ).Value.val
+        password = AppleAccount.Entries.get_Entry( 'password' ).Value.val
+        return email, password
+
+    @staticmethod
+    def get_connection( email=None, password=None ):
+
+        connection = PyiCloudService( email, password )
         if connection.requires_2fa:
 
             print ('Two-factor authentication required.')
@@ -52,5 +70,5 @@ class Connection( ParentClass ):
                 print ("Failed to verify verification code")
                 sys.exit(1)
 
-        self.conn = connection
+        return connection
 
