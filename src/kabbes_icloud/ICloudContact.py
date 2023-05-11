@@ -61,9 +61,6 @@ class ICloudContact( kabbes_menu.Menu ):
     def _check_for_Attribute_Options( self ):
 
         vars_to_check = vars(self).copy() #define this here otherwise the vars(self) changes length
-
-
-
         for key in vars_to_check:
             value = self.get_attr(key)
             if type( value ) == list:

@@ -165,7 +165,7 @@ class ICloudContacts( ParentPluralDict, kabbes_menu.Menu ):
 
             for contactId in boolean_dict:
                 if not boolean_dict[ contactId ]:
-                    Valid_Contacts.remove_iCloud_Contact( Valid_Contacts.Contacts[contactId] )
+                    Valid_Contacts.remove_ICloudContact( Valid_Contacts.Contacts[contactId] )
 
         # returns an iCloud_Contacts class instance
         return Valid_Contacts
